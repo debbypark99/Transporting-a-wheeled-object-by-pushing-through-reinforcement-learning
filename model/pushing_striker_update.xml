@@ -1,0 +1,208 @@
+<mujoco model="pushing_striker">
+  <compiler inertiafromgeom="true" angle="radian" coordinate="local" meshdir="meshes/"/>
+  <option timestep="1.0" solver="PGS"  gravity="0 0 0" iterations="20" integrator="Euler"/>
+  
+  <asset>
+    <mesh file="push_box.stl"/>
+    <mesh file="pushing_hand.stl"/>
+    <mesh file="caster_wheel.stl"/>
+    <mesh file="caster_wheel_O.stl"/>
+    <mesh file="caster_middle.stl"/>
+    <mesh file="caster_top.stl"/>
+    
+    <texture type="skybox" builtin="gradient" rgb1=".2 .3 .4" rgb2="1 1 1"
+      width="100" height="100"/>
+    <material name="MatViz" specular="1" shininess=".1" reflectance="0.5" rgba=".07 .07 .1 1"/>
+  </asset>
+  <default>
+    <joint armature='0.04' damping="1"/>
+    <geom friction="0 0 0" density="300" margin="0.002" condim="1" contype="0" conaffinity="0"/>
+    <default class ="vizNcoll">
+      <geom material="MatViz" type="mesh" condim="1" contype="1" conaffinity="1" margin="0.001"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <light diffuse=".5 .5 .5" pos="0 0 3" dir="0 0 -1"/>
+    <geom name="table" type="plane" pos="0 0 0" size="1000 2000 1000" contype="1" conaffinity="1"/>
+    <!--striker body
+    <body name="r_shoulder_pan_link" pos="0 -0.6 0">
+      <geom name="e1" type="sphere" rgba="0.6 0.6 0.6 1" pos="-0.06 0.05 0.2" size="0.05"/>
+      <geom name="e2" type="sphere" rgba="0.6 0.6 0.6 1" pos=" 0.06 0.05 0.2" size="0.05"/>
+      <geom name="e1p" type="sphere" rgba="0.1 0.1 0.1 1" pos="-0.06 0.09 0.2" size="0.03"/>
+      <geom name="e2p" type="sphere" rgba="0.1 0.1 0.1 1" pos=" 0.06 0.09 0.2" size="0.03"/>
+      <geom name="sp" type="capsule" fromto="0 0 -0.4 0 0 0.2" size="0.1" />
+      <joint name="r_shoulder_pan_joint" type="hinge" pos="0 0 0" axis="0 0 1" range="-2.2854 1.714602" damping="1.0" />
+
+      <body name="r_shoulder_lift_link" pos="0.1 0 0">
+        <geom name="sl" type="capsule" fromto="0 -0.1 0 0 0.1 0" size="0.1" />
+        <joint name="r_shoulder_lift_joint" type="hinge" pos="0 0 0" axis="0 1 0" range="-0.5236 1.3963" damping="1.0" />
+
+        <body name="r_upper_arm_roll_link" pos="0 0 0">
+          <geom name="uar" type="capsule" fromto="-0.1 0 0 0.1 0 0" size="0.02" />
+          <joint name="r_upper_arm_roll_joint" type="hinge" pos="0 0 0" axis="1 0 0" range="-1.5 1.7" damping="0.1" />
+
+          <body name="r_upper_arm_link" pos="0 0 0">
+            <geom name="ua" type="capsule" fromto="0 0 0 0.4 0 0" size="0.06" />
+
+            <body name="r_elbow_flex_link" pos="0.4 0 0">
+              <geom name="ef" type="capsule" fromto="0 -0.02 0 0.0 0.02 0" size="0.06" />
+              <joint name="r_elbow_flex_joint" type="hinge" pos="0 0 0" axis="0 1 0" range="-2.3213 0" damping="0.1" />
+
+              <body name="r_forearm_roll_link" pos="0 0 0">
+                <geom name="fr" type="capsule" fromto="-0.1 0 0 0.1 0 0" size="0.02" />
+                <joint name="r_forearm_roll_joint" type="hinge" limited="true" pos="0 0 0" axis="1 0 0" damping=".1" range="-1.5 1.5"/>
+
+                <body name="r_forearm_link" pos="0 0 0">
+                  <geom name="fa" type="capsule" fromto="0 0 0 0.291 0 0" size="0.05" />
+
+                  <body name="r_wrist_flex_link" pos="0.321 0 0">
+                    <geom name="wf" type="capsule" fromto="0 -0.02 0 0 0.02 0" size="0.01" />
+                    <joint name="r_wrist_flex_joint" type="hinge" pos="0 0 0" axis="0 1 0" range="-1.094 0" damping=".1" />
+
+                    <body name="r_wrist_roll_link" pos="0 0 0">
+                      <joint name="r_wrist_roll_joint" type="hinge" pos="0 0 0" limited="true" axis="1 0 0" damping="0.1" range="-1.5 1.5"/>
+
+
+                      <body name="tips_arm" pos="0 0 0">
+                        <geom conaffinity="1" contype="1" name="tip_arml" pos="0.017 0 0" size="0.003 0.12 0.05" type="box" />
+
+                      </body>
+                      <geom conaffinity="1" contype="1" fromto="0 -0.1 0. 0.0 +0.1 0" size="0.02" type="capsule" />
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+    -->
+    
+    <body name="push_box" childclass="vizNcoll" pos="0 0 0">
+      <geom mesh="push_box" contype="1" conaffinity="0"/>
+    </body>
+    
+    <body name="pushing_hand_1" pos="68 260 200">
+      <joint name="slider_1" type="slide" pos="0 0 0" axis="0 1 0" range="-2 2" damping="1.0" limited="true"/>
+      <geom mesh="pushing_hand" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+    </body>
+    <body name="pushing_hand_2" pos="158 260 200">
+      <joint name="slider_2" type="slide" pos="0 0 0" axis="0 1 0" range="-200 0" damping="1.0" limited="true"/>
+      <geom mesh="pushing_hand" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+    </body>
+    <body name="pushing_hand_3" pos="248 260 200">
+      <joint name="slider_3" type="slide" pos="0 0 0" axis="0 1 0" range="-200 0" damping="1.0" limited="true"/>
+      <geom mesh="pushing_hand" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+    </body>
+
+
+    <!--
+    <body name="pushing_hand_2" pos="158 260 200" axisangle="1 0 0 1.570796">
+      <joint name="slider_2" type="slide" pos="0 0 0" axis="0 1 0" range="0 100" damping="1.0" limited="true"/>
+      <geom mesh="pushing_hand" type="mesh" contype="1"/>
+    </body>
+    <body name="pushing_hand_3" pos="248 260 200" axisangle="1 0 0 1.570796">
+      <joint name="slider_3" type="slide" pos="0 0 0" axis="0 1 0" range="0 100" damping="1.0" limited="true"/>
+      <geom mesh="pushing_hand" type="mesh" contype="1"/>
+    </body>-->
+
+    
+    <!--
+    <body name="object" pos="158 -180 125" >
+      <geom type="box" rgba="1 1 1 1" pos="0 0 0" size="125 125 125" contype="1" conaffinity="0"/>
+      <joint name="obj_slidey" armature="0.1" type="slide" pos="0 0 0" axis="0 1 0" range="-10321.3 10300" damping="0.5"/>
+      <joint name="obj_slidex" armature="0.1" type="slide" pos="0 0 0" axis="1 0 0" range="-10321.3 10300" damping="0.5"/>
+    </body>
+    -->
+    <body name="object" pos="158 -180 195" axisangle="0 0 1 3.141592">
+      <geom type="box" rgba="1 1 1 1" pos="0 0 0" size="125 125 125" contype="1" conaffinity="0"/>
+      <body name="top_1" pos="110 110 -170" >
+        <geom mesh="caster_top" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+        <body name="middle_1" pos="0 0 0" >
+          <joint name="top_middle_1" type="hinge" pos="0 0 0" axis="0 0 1" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+          <geom mesh="caster_middle" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          <!--body name="wheel_1" pos="0 0 0" >
+            <joint name="middle_wheel_1_O" type="hinge" pos="0 0 -50" axis="1 0 0" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+            <geom mesh="caster_wheel" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body-->
+          <body name="wheel_1" pos="0 -25 0">
+              <joint name="middle_wheel_1" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.01" />
+              <geom mesh="caster_wheel_O" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body>
+        </body>
+      </body>
+      <body name="top_2" pos="110 -110 -170" >
+        <geom mesh="caster_top" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+        <body name="middle_2" pos="0 0 0" >
+          <joint name="top_middle_2" type="hinge" pos="0 0 0" axis="0 0 1" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+          <geom mesh="caster_middle" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          <!--body name="wheel_1" pos="0 0 0" >
+            <joint name="middle_wheel_1_O" type="hinge" pos="0 0 -50" axis="1 0 0" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+            <geom mesh="caster_wheel" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body-->
+          <body name="wheel_2" pos="0 -25 0">
+              <joint name="middle_wheel_2" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.01" />
+              <geom mesh="caster_wheel_O" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body>
+        </body>
+      </body>
+      <body name="top_3" pos="-110 110 -170" >
+        <geom mesh="caster_top" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+        <body name="middle_3" pos="0 0 0" >
+          <joint name="top_middle_3" type="hinge" pos="0 0 0" axis="0 0 1" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+          <geom mesh="caster_middle" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          <!--body name="wheel_1" pos="0 0 0" >
+            <joint name="middle_wheel_1_O" type="hinge" pos="0 0 -50" axis="1 0 0" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+            <geom mesh="caster_wheel" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body-->
+          <body name="wheel_3" pos="0 -25 0">
+              <joint name="middle_wheel_3" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.01" />
+              <geom mesh="caster_wheel_O" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body>
+        </body>
+      </body>
+      <body name="top_4" pos="-110 -110 -170" >
+        <geom mesh="caster_top" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+        <body name="middle_4" pos="0 0 0" >
+          <joint name="top_middle_4" type="hinge" pos="0 0 0" axis="0 0 1" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+          <geom mesh="caster_middle" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          <!--body name="wheel_1" pos="0 0 0" >
+            <joint name="middle_wheel_1_O" type="hinge" pos="0 0 -50" axis="1 0 0" range="-3.141592 3.141592" damping="1.0" limited="true"/>
+            <geom mesh="caster_wheel" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body-->
+          <body name="wheel_4" pos="0 -25 0">
+              <joint name="middle_wheel_4" type="hinge" pos="0 0 0" axis="1 0 0" damping="0.01" />
+              <geom mesh="caster_wheel_O" axisangle="1 0 0 1.570796" type="mesh" condim="1" contype="1" conaffinity="0"/>
+          </body>
+        </body>
+      </body>
+    
+    </body>
+    
+    <body name="goal" pos="0.0 -800 0.0">
+      <geom rgba="1. 1. 1. 0.1" pos="0 0 125" type="box" size="125 125 125" contype="0" conaffinity="0"/>
+      <body name="coaster" pos="0 0 0">
+        <geom rgba="1. 1. 1. 1" type="box" size="125 125 1" density='1000000' contype="0" conaffinity="0"/>
+      </body>
+      <joint name="goal_free" type="free" pos="0 0 0" limited="false" damping="0"/>
+    </body>
+    
+  </worldbody>
+
+  <actuator>
+      <motor joint="slider_1" ctrlrange="-2 2"  ctrllimited="true" name="slide_1"/>
+
+    <!--
+    <motor joint="r_shoulder_pan_joint" ctrlrange="-3.0 3.0" ctrllimited="true" />
+    <motor joint="r_shoulder_lift_joint" ctrlrange="-3.0 3.0" ctrllimited="true" />
+    <motor joint="r_upper_arm_roll_joint" ctrlrange="-3.0 3.0" ctrllimited="true" />
+    <motor joint="r_elbow_flex_joint" ctrlrange="-3.0 3.0" ctrllimited="true" />
+    <motor joint="r_forearm_roll_joint" ctrlrange="-3.0 3.0" ctrllimited="true" />
+    <motor joint="r_wrist_flex_joint" ctrlrange="-3.0 3.0" ctrllimited="true" />
+    <motor joint="r_wrist_roll_joint" ctrlrange="-3.0 3.0" ctrllimited="true"/>
+    -->
+  </actuator>
+
+</mujoco>
